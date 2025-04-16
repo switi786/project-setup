@@ -1,0 +1,38 @@
+name: 🚀 FTP Deploy Laravel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    name: 🎯 Deploy to cPanel via FTP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: 🛠 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: 🧱 Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: 🚀 Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          server-dir: /public_html/test/    # or /your_subfolder/
+          exclude: |
+            **/.git*
+            **/node_modules/**
+            **/tests/**
+            **/.env
+            **/storage/logs/**
