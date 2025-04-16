@@ -1,1 +1,1 @@
-🚀 Deployment test file at: {{ now }}
+🚀 Deployment test file 
